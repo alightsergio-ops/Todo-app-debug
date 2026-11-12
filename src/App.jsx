@@ -1,3 +1,5 @@
+
+import React from "react";
 import { useMemo, useState } from "react";
 import TodoFilters from "./components/TodoFilters";
 import TodoForm from "./components/TodoForm";
@@ -6,8 +8,15 @@ import { useTodos } from "./useTodos";
 import "./App.css";
 
 export default function App() {
-  const { todos, addTodo, toggleTodo, deleteTodo, updateTodo, clearCompleted } =
-    useTodos();
+  const {
+    todos,
+    addTodo,
+    toggleTodo,
+    deleteTodo,
+    updateTodo,
+    clearCompleted
+  } = useTodos();
+
   const [filter, setFilter] = useState("all");
   const [query, setQuery] = useState("");
 
@@ -17,35 +26,49 @@ export default function App() {
     completed: todos.filter((todo) => todo.completed).length,
   };
 
-  const remaining = todos.filter((todo) => todo.completed).length;
+  const remaining = todos.filter((todo) => !todo.completed).length;
 
   const visible = useMemo(() => {
-    const needle = query.trim();
+    const needle = query.trim().toLowerCase();
 
     return todos.filter((todo) => {
-      if (filter === "active" && !todo.completed) return false;
-      if (filter === "completed" && todo.completed) return false;
-      if (needle && !todo.text.includes(needle)) return false;
+      if (filter === "active" && todo.completed) return false;
+      if (filter === "completed" && !todo.completed) return false;
+
+      if (needle && !todo.text.toLowerCase().includes(needle)) {
+        return false;
+      }
+
       return true;
     });
   }, [todos, filter, query]);
 
   const emptyLabel =
-    todos.length === 0 ? "Nothing on the list yet." : "No tasks match this view.";
+    todos.length === 0
+      ? "Nothing on the list yet."
+      : "No tasks match this view.";
 
   return (
     <main className="page">
       <section className="card">
+
         <header className="masthead">
           <p className="eyebrow">Today</p>
           <h1>Desklist</h1>
-          <p className="lede">A short list for the work in front of you.</p>
+          <p className="lede">
+            A short list for the work in front of you.
+          </p>
         </header>
 
         <TodoForm onAdd={addTodo} />
 
         <div className="toolbar">
-          <TodoFilters filter={filter} counts={counts} onFilter={setFilter} />
+          <TodoFilters
+            filter={filter}
+            counts={counts}
+            onFilter={setFilter}
+          />
+
           <label className="search">
             <span className="field-label">Search</span>
             <input
@@ -69,8 +92,10 @@ export default function App() {
 
         <footer className="footer">
           <p>
-            <strong>{remaining}</strong> {remaining === 1 ? "item" : "items"} left
+            <strong>{remaining}</strong>{" "}
+            {remaining === 1 ? "item" : "items"} left
           </p>
+
           <button
             type="button"
             className="ghost"
@@ -82,8 +107,10 @@ export default function App() {
         </footer>
 
         <p className="hint">
-          Click a task name to rename it. The list stays in this browser after a refresh.
+          Click a task name to rename it.
+          The list stays in this browser after a refresh.
         </p>
+
       </section>
     </main>
   );

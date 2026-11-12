@@ -1,3 +1,4 @@
+import React from "react";
 import TodoItem from "./TodoItem";
 
 export default function TodoList({
@@ -12,6 +13,7 @@ export default function TodoList({
     return (
       <div className="empty">
         <p className="empty-title">{emptyLabel}</p>
+
         <p className="empty-copy">
           {isListEmpty
             ? "Add a task above to start the list."
@@ -25,6 +27,7 @@ export default function TodoList({
     <ul className="list">
       {todos.map((todo) => (
         <TodoItem
+          key={todo.id}
           todo={todo}
           onToggle={onToggle}
           onDelete={onDelete}

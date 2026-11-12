@@ -1,4 +1,5 @@
 import React from "react";
+import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./index.css";
@@ -23,9 +24,9 @@ class ErrorScreen extends React.Component {
 }
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
+  <StrictMode>
     <ErrorScreen>
       <App />
     </ErrorScreen>
-  </React.StrictMode>
+  </StrictMode>
 );
